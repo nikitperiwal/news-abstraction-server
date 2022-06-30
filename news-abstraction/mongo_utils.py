@@ -27,12 +27,12 @@ def read_from_mongo(collection_name: str, db_name: str = "news_db"):
 
     Parameters
     ----------
-    collection_name -> Name of the collection to read the articles from.
-    db_name         -> Name of the MongoDB database to read the articles from.
+    collection_name: Name of the collection to read the articles from.
+    db_name: Name of the MongoDB database to read the articles from.
 
     Returns
     -------
-    cursor -> the cursor to the selected collection.
+    cursor: the cursor to the selected collection.
     """
     global client
 
@@ -47,8 +47,8 @@ def drop_from_mongo(collection_name: str, db_name: str = "news_db"):
 
     Parameters
     ----------
-    collection_name -> Name of the collection to drop.
-    db_name         -> Name of the MongoDB database to drop from.
+    collection_name: Name of the collection to drop.
+    db_name: Name of the MongoDB database to drop from.
     """
     global client
 
@@ -62,12 +62,12 @@ def remove_from_collection(id_list: list, collection_name: str, db_name: str = "
 
     Parameters
     ----------
-    collection_name -> Name of the collection to remove from.
-    db_name         -> Name of the MongoDB database to drop from.
+    collection_name: Name of the collection to remove from.
+    db_name: Name of the MongoDB database to drop from.
 
     Returns
     -------
-    items -> The list of news articles stored in db.
+    items: The list of news articles stored in db.
     """
     global client
 

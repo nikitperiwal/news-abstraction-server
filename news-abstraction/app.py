@@ -1,4 +1,4 @@
-from text_abstraction import summarize_text
+from text_summarizer import summarize_text
 import mongo_utils
 import schedule
 
@@ -20,7 +20,7 @@ def start_curating():
     for article in news_articles:
         article_ids.append(article["_id"])
         article["abstract"] = summarize_text(article["content"])
-        # article["categories"] = predict_categories(article["abstract"])
+        # article["categories"] = predict_category(article["abstract"])
 
     print(f"Persisting {len(news_articles)} articles to '{processed_table}'.")
     mongo_utils.persist_to_mongo(news_articles, collection_name=processed_table)
