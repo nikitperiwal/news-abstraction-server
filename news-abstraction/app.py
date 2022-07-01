@@ -1,9 +1,8 @@
 from text_summarizer import summarize_text
+from news_classifier import predict_category
 import mongo_utils
 import schedule
-
-curated_table = "curated_news"
-processed_table = "processed_news"
+import constants
 
 
 def start_curating():
@@ -12,21 +11,23 @@ def start_curating():
     Predicts abstract and categories from the news articles.
     Persists to 'processed_news' table.
     """
-    news_articles = list(mongo_utils.read_from_mongo(curated_table))
-    print(f"No. of news articles read from '{curated_table}': {len(news_articles)}")
+
+    news_articles = list(mongo_utils.read_from_mongo(constants.CURATED_TABLE))
+    print(f"No. of news articles read from '{constants.CURATED_TABLE}': {len(news_articles)}")
+
+    article_ids = [article["_id"] for article in news_articles]
+    article_contents = [article["content"] for article in news_articles]
 
     # Predicting abstract and categories for the news articles
-    article_ids = list()
-    for article in news_articles:
-        article_ids.append(article["_id"])
-        article["abstract"] = summarize_text(article["content"])
-        # article["categories"] = predict_category(article["abstract"])
+    predicted_abstracts = summarize_text(article_contents)
+    predicted_categories = predict_category(article_contents)
 
-    print(f"Persisting {len(news_articles)} articles to '{processed_table}'.")
-    mongo_utils.persist_to_mongo(news_articles, collection_name=processed_table)
+    for i, article in enumerate(news_articles):
+        article["abstract"] = predicted_abstracts[i]
+        article["categories"] = predicted_categories[i]
 
-    print(f"Removing the news articles from '{curated_table}'.")
-    mongo_utils.remove_from_collection(article_ids, collection_name=curated_table)
+    mongo_utils.persist_to_mongo(news_articles, collection_name=constants.PROCESSED_TABLE)
+    mongo_utils.remove_from_collection(article_ids, collection_name=constants.CURATED_TABLE)
 
 
 def scheduler(interval: int):
@@ -39,4 +40,4 @@ def scheduler(interval: int):
 
 
 if __name__ == "__main__":
-    scheduler(5)
+    scheduler(constants.SCHEDULE_MINUTES)

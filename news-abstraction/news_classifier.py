@@ -1,3 +1,4 @@
+import constants
 from models import get_base_bert, get_news_classifier
 
 # Loads the tokenizer and the models
@@ -12,7 +13,7 @@ def tokenize_data(text):
 
     tokens = bert_tokenizer(
         text,
-        max_length=90,
+        max_length=constants.NEWS_MAX_LENGTH,
         padding='max_length',
         truncation=True,
         return_tensors='tf'
@@ -21,17 +22,17 @@ def tokenize_data(text):
     return [input_ids, attention_mask]
 
 
-def bert_predict(description):
+def bert_predict(text_list):
     """
     Predicts using Base BERT model. Returns the prediction embedding.
     """
 
-    tokens = tokenize_data(description)
+    tokens = tokenize_data(text_list)
     output = bert_model.predict(tokens)[0]
     return output
 
 
-def predict_category(bert_output, news_categories):
+def predict_category(news_articles):
     """
     Returns the category of news by predicting on the bert_output.
 
@@ -41,6 +42,11 @@ def predict_category(bert_output, news_categories):
     news_categories: list of all categories
     """
 
-    pred = news_classifier.predict(bert_output)[0]
-    pred_index = pred.numpy().argmax()
-    return news_categories[pred_index]
+    bert_output = bert_predict(news_articles)
+    prediction = news_classifier.predict(bert_output)
+    indexes = prediction.argmax(axis=1)
+    categories = []
+    for index in indexes:
+        categories.append(constants.NEWS_CATEGORIES[index])
+
+    return categories
