@@ -20,7 +20,7 @@ def start_curating():
 
     # Predicting abstract and categories for the news articles
     predicted_abstracts = summarize_text(article_contents)
-    predicted_categories = predict_category(article_contents)
+    predicted_categories = predict_category(predicted_abstracts)
 
     for i, article in enumerate(news_articles):
         article["abstract"] = predicted_abstracts[i]
