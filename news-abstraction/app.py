@@ -24,7 +24,7 @@ def start_curating():
 
     for i, article in enumerate(news_articles):
         article["abstract"] = predicted_abstracts[i]
-        article["categories"] = predicted_categories[i]
+        article["category"] = predicted_categories[i]
 
     mongo_utils.persist_to_mongo(news_articles, collection_name=constants.PROCESSED_TABLE)
     mongo_utils.remove_from_collection(article_ids, collection_name=constants.CURATED_TABLE)
