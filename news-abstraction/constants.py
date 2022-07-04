@@ -17,10 +17,10 @@ PROCESSED_TABLE = "processed_news"
 # News Category Model Parameters
 CATEGORY_BASE_BERT = "distilbert-base-uncased"
 CATEGORY_MODEL_WEIGHT_PATH = "models/News_Classifier_Weights/Weights"
-NEWS_MAX_LENGTH = 90
+NEWS_MAX_LENGTH = 75
 NEWS_NUM_OUTPUT = len(NEWS_CATEGORIES)
 
 # Text Abstraction Model Parameters
 ABSTRACTION_MODEL = "facebook/bart-large-cnn"   # t5-base, t5-small
-ABSTRACT_MAX_LENGTH = 90
+ABSTRACT_MAX_LENGTH = 75
 ABSTRACT_MIN_LENGTH = 60
