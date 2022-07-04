@@ -38,7 +38,7 @@ def execute():
     i = 0
     batch_size = 10
     while i < len(news_articles):
-        print(f"Executing for {i}-{i+batch_size}")
+        print(f"Executing for {i+1}-{i+batch_size}")
         news_subset = news_articles[i: i + batch_size]
         execute_subset(news_subset)
         i += batch_size
